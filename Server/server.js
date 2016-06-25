@@ -29,7 +29,7 @@ app.use(method_override('X-HTTP-Method-Override'));
 
 
 
-<<<<<<< HEAD
+
 /*Do not remove this block
 // app.get('/',function(req,res,next){
 // 	Puppies.create({
@@ -60,8 +60,7 @@ app.use(method_override('X-HTTP-Method-Override'));
 // 	})
 // })
 */
-=======
->>>>>>> 7f213909f47946b334dd26d116a92d2ee7cd086e
+
 //Start of the registration block
 var puppyRouter = express.Router();
 
