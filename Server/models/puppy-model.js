@@ -1,8 +1,6 @@
-// grab the things we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// create a schema
 var puppySchema = new Schema({
     dog_id: {
         type: String,
@@ -17,14 +15,17 @@ var puppySchema = new Schema({
         type: String
     },
     dog_friends:[String],
-    dog_isOnline: {type: Boolean, default: true}
+    dog_isOnline: {type: Boolean, default: false},
+    contact_email: {
+        type: String,
+        unique: true
+    },
+    contact_password: String,
+    contact_phoneNo: String
 }, {
     timestamps: true
 });
 
-// the schema is useless so far
-// we need to create a model using it
-var Puppies = mongoose.model('Puppies', puppySchema);
 
-// make this available to our Node applications
+var Puppies = mongoose.model('Puppies', puppySchema);
 module.exports = Puppies;
