@@ -3,6 +3,7 @@ var express = require('express'),
 	request = require('request'),
 	body_parser = require('body-parser'),
 	morgan = require('morgan'),
+	_ = require('lodash'),
 	mongoose = require('mongoose'),
 	method_override = require('method-override'),
  	mongo_db_uri = "mongodb://ek5442:NokiaLumia920@ds033875.mlab.com:33875/movies";
@@ -16,9 +17,8 @@ app.use(body_parser.json());
 app.use(body_parser.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
 
-app.get('/',function(req,res,next){
-	res.send("Its for lols and gigls");
-})
+
+
 // app.get('/test',function(req,res,next){
 // 	res.send("Hello World");
 // })
@@ -38,7 +38,12 @@ console.log("Listening on port 8000");
 //end of the registration block
 
 //start of the location bloc
-
+//The post request will be made with location coordinates
+//params will hold the dogs unique id 
+app.post('/location/:param',function(req,res,next){
+	console.log(req.params.param);
+	console.log(JSON.stringify(req.body));
+});
 
 
 
