@@ -14,42 +14,21 @@ var express = require('express'),
 mongoose.connect(mongo_db_uri);
 var db = mongoose.connection;
 db.on('error',console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    // we're connected!
-    console.log("Connected correctly to server");
-    // Create our first puppy
-    Puppies.create({
-    	dog_id: uuid.v4(),
-        dog_name: 'Fluffy',
-        dog_gender: 'Male',
-        dog_friends: [
-          'Abe','Beth','Charlie'
-        ]
-    });
-});
-
 app.use(morgan('dev'));
 app.use(body_parser.urlencoded({'extended':false}));
 app.use(body_parser.json());
 app.use(body_parser.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
 
-<<<<<<< HEAD
 
 
-// app.get('/test',function(req,res,next){
-// 	res.send("Hello World");
-// })
 
-console.log("Listening on port 8000");
+
+
 
 //Start of the registration block
-=======
->>>>>>> da124f1e95d9899a3128e6f67737e4ef4564f9de
-
-
 var puppyRouter = express.Router();
-puppyRouter.use(body_parser.json());
+
 
 puppyRouter.route('/')
 .get(function(req,res,next){
@@ -74,25 +53,18 @@ app.use('/puppies',puppyRouter);
 
 
 
-//Start of the registration block
-
-
-<<<<<<< HEAD
 //start of the location bloc
 //The post request will be made with location coordinates
 //params will hold the dogs unique id 
-app.post('/location/:param',function(req,res,next){
-	console.log(req.params.param);
-	console.log(JSON.stringify(req.body));
-});
-=======
 
->>>>>>> da124f1e95d9899a3128e6f67737e4ef4564f9de
 
 //end of the registration block
 
 //start of the location block
-
+app.post('/location/:param',function(req,res,next){
+	console.log(req.params.param);
+	console.log(JSON.stringify(req.body));
+});
 
 
 
@@ -102,8 +74,6 @@ app.post('/location/:param',function(req,res,next){
 
 
 
-
-var port = 8000;
-app.listen(port || process.env.PORT);
-console.log("Listening on port " + port);
+app.listen(8000);
+console.log("Application listening on port 8000");
 
