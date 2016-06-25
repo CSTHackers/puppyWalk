@@ -13,9 +13,9 @@ var express = require('express'),
 
 
 // connect to mongo lab db:
-// mongoose.connect(mongo_db_uri);
+ mongoose.connect(mongo_db_uri);
 // to delete: Rahman local: 
-var url = 'mongodb://localhost:27017/conFusion';mongoose.connect(url);
+//var url = 'mongodb://localhost:27017/conFusion';mongoose.connect(url);
 
 
 var db = mongoose.connection;
