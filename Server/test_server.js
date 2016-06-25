@@ -10,12 +10,9 @@ app.use(body_parse.urlencoded({'extended':false}));
 app.use(body_parse.json());
 app.use(body_parse.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
-app.get('/test',function(req,res,next){
-	res.send("It worked");
-});
-app.post('/post',function(req,res,next){
-	res.send(JSON.stringify(req.body))
+app.post('/get_loc',function(req,res,next){
+	console.log(req);
 })
-app.listen(8000);
+app.listen(8888);
 console.log("Listening on port 8000");
 

@@ -2,6 +2,7 @@ var express = require('express'),
 	app = express(),
 	request = require('request'),
 	body_parser = require('body-parser'),
+	twillio = require('./twilio'),
 	morgan = require('morgan'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
@@ -27,39 +28,6 @@ app.use(body_parser.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
 
 
-
-
-
-/*Do not remove this block
-// app.get('/',function(req,res,next){
-// 	Puppies.create({
-// 		dog_id:uuid.v4(),
-// 		dog_name:"John",
-// 		dog_gender: "Male",
-// 		dog_friends:["Bob","Sam","Golum"],
-// 		dog_isOnline:false
-// 	},function(err,data){
-// 		if(err)
-// 			throw err;
-// 		else{
-// 			data.dog_friends.filter(function(el){
-// 				Puppies.create({
-// 					dog_id:uuid.v4(),
-// 					dog_name:el,
-// 					dog_gender:"Male",
-// 					dog_friends:_.pull(["Bob","Sam","Golum"],el),
-// 					dog_isOnline:false
-// 				},function(err,data){
-// 					if(err)
-// 						throw err;
-// 					else
-// 						console.log(data);
-// 				})
-// 			})
-// 		}
-// 	})
-// })
-*/
 
 //Start of the registration block
 var puppyRouter = express.Router();
@@ -126,7 +94,13 @@ app.use('/puppies',puppyRouter);
 //The post request will be made with location coordinates
 //params will hold the dogs unique id 
 
-
+app.get('/',function(req,res,next){
+	var number = "+13475838019";
+	var message = "Some random string";
+	twillio.createMessage(number,message);
+	res.send("It was send cunt");
+	res.end("Ben Afflick");
+})
 //end of the registration block
 
 //start of the location block
@@ -138,24 +112,24 @@ app.post('/location/:param',function(req,res,next){
 			throw err;
 		else{
 			data.dog_friends.filter(function(el){
-				Puppies.find({dog_name:el},function(err,data){
+				Puppies.findOne({dog_id:el},function(err,data){
 					if(err)
 						throw err;
-					else{
-						data.filter(function(el){
-							if(el.dog_isOnline){
-								/*create Point object  with id being the dogs id and 
-									make a request to location
-									check whether dog is far 
-										if the dog is far watch his/her position
-										otherwise send notification to the app
-								*/
-								console.log(el);
-							}else{
-								console.log("I will");
+					else
+						if(data.dog_isOnline){
+							var Point = {
+								'id':data.dog_id,
 							}
-						})
-					}
+							request.post({url:'https://127.0.0.1:8888/get_loc', form: {key:'value'}}, function(err,httpResponse,body){ 
+								if(err)
+									console.log(err);
+								else{
+									console.log(body)
+								}
+							})
+						}else{
+							console.log("Ben Afflick");
+						}
 				})
 			})
 		}
