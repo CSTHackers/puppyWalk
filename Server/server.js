@@ -6,8 +6,9 @@ var express = require('express'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
 	method_override = require('method-override'),
- 	mongo_db_uri = "mongodb://ek5442:NokiaLumia920@ds033875.mlab.com:33875/movies";
-	Puppies = require('./models/puppy-model');
+ 	mongo_db_uri = "mongodb://ek5442:NokiaLumia920@ds033875.mlab.com:33875/movies",
+	Puppies = require('./models/puppy-model'),
+	Distance = require('./distance'),
 	uuid = require('uuid');
 
 
@@ -100,6 +101,29 @@ app.use('/puppies',puppyRouter);
 app.post('/location/:param',function(req,res,next){
 	console.log(req.params.param);
 	console.log(JSON.stringify(req.body));
+	Puppies.find({dog_id:req.params.param},function(err,data){
+		if(err)
+			throw err;
+		else{
+			//first query friends and check whether they online or not
+			//if the friend online chekck location if the location
+			data[0].dog_friends.filter(function(el){
+				//to be changed to dog id instead
+				Puppies.find({dog_name:el},function(err,data){
+					if(err)
+						throw err;
+					else
+						data[0].filter(function(el){
+							if (el.dog_isOnline)
+								console.log("It worked");
+							else
+								res.send("No dogs online");
+						})
+				})
+			})
+			//in acceptable radius send notification
+		}
+	})
 });
 
 
