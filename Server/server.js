@@ -24,9 +24,36 @@ app.use(method_override('X-HTTP-Method-Override'));
 
 
 
-
-
-
+/*Do not remove this block
+// app.get('/',function(req,res,next){
+// 	Puppies.create({
+// 		dog_id:uuid.v4(),
+// 		dog_name:"John",
+// 		dog_gender: "Male",
+// 		dog_friends:["Bob","Sam","Golum"],
+// 		dog_isOnline:false
+// 	},function(err,data){
+// 		if(err)
+// 			throw err;
+// 		else{
+// 			data.dog_friends.filter(function(el){
+// 				Puppies.create({
+// 					dog_id:uuid.v4(),
+// 					dog_name:el,
+// 					dog_gender:"Male",
+// 					dog_friends:_.pull(["Bob","Sam","Golum"],el),
+// 					dog_isOnline:false
+// 				},function(err,data){
+// 					if(err)
+// 						throw err;
+// 					else
+// 						console.log(data);
+// 				})
+// 			})
+// 		}
+// 	})
+// })
+*/
 //Start of the registration block
 var puppyRouter = express.Router();
 
@@ -63,41 +90,49 @@ app.use('/puppies',puppyRouter);
 
 //start of the location block
 app.post('/location/:param',function(req,res,next){
-	console.log(req.params.param);
-	console.log(JSON.stringify(req.body));
-	Puppies.find({dog_id:req.params.param},function(err,data){
+	Puppies.findOneAndUpdate({dog_id:req.params.param},{$set:{
+		dog_isOnline:true
+	}},function(err,data){
 		if(err)
 			throw err;
 		else{
-			//first query friends and check whether they online or not
-			//if the friend online chekck location if the location
-			data[0].dog_friends.filter(function(el){
-				//to be changed to dog id instead
+			data.dog_friends.filter(function(el){
 				Puppies.find({dog_name:el},function(err,data){
 					if(err)
 						throw err;
-					else
-						data[0].filter(function(el){
-							if (el.dog_isOnline)
-								console.log("It worked");
-							else
-								res.send("No dogs online");
+					else{
+						data.filter(function(el){
+							if(el.dog_isOnline){
+								/*create Point object  with id being the dogs id and 
+									make a request to location
+									check whether dog is far 
+										if the dog is far watch his/her position
+										otherwise send notification to the app
+								*/
+								console.log(el);
+							}else{
+								console.log("I will");
+							}
 						})
+					}
 				})
 			})
-			//in acceptable radius send notification
 		}
-	})
+			
+	});
+		
 });
-
 
 
 
 //end of the location block
 
+//start of the friend block
+
+//end of the friend block
 
 
 
-app.listen(8000);
+app.listen(8000 );
 console.log("Application listening on port 8000");
 
