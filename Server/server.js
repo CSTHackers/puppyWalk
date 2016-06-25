@@ -11,7 +11,12 @@ var express = require('express'),
 	uuid = require('uuid');
 
 
-mongoose.connect(mongo_db_uri);
+// connect to mongo lab db:
+// mongoose.connect(mongo_db_uri);
+// to delete: Rahman local: 
+var url = 'mongodb://localhost:27017/conFusion';mongoose.connect(url);
+
+
 var db = mongoose.connection;
 db.on('error',console.error.bind(console, 'connection error:'));
 app.use(morgan('dev'));
@@ -23,14 +28,12 @@ app.use(method_override('X-HTTP-Method-Override'));
 
 
 
-
-
-
 //Start of the registration block
 var puppyRouter = express.Router();
 
-
+// Setup route
 puppyRouter.route('/')
+// Read entire db collection
 .get(function(req,res,next){
 
 	Puppies.find({}, function (err, puppy) {
@@ -38,16 +41,49 @@ puppyRouter.route('/')
         res.json(puppy);
     });
 })
+// Create new puppy entry
 .post(function(req, res, next){
 	var id = uuid.v4();
 	Puppies.create({
-			dog_id: id, dog_name: req.body.dog_name
+			dog_id: id, 
+			dog_name: req.body.dog_name,
+			dog_gender: req.body.dog_gender,
+			dog_friends: req.body.dog_friends,
+			dog_isOnline: req.body.dog_isOnline,
+			contact_email: req.body.contact_email,
+			contact_password: req.body.contact_password,
+			contact_phoneNo: req.body.contact_phoneNo
 		}, function (err, puppy) {
         if (err) throw err;
         console.log('Puppy created!');
         res.end('Added puppy (' + req.body.dog_name + ') with id: ' + id);
     });   
 })
+
+// Post to authenticate user email and password (req: contact_email and contact_password)
+puppyRouter.route('/login')
+.post(function (req, res, next) {
+    Puppies.find({$and:[
+    		{contact_email: req.body.contact_email},
+    		{contact_password: req.body.contact_password}
+    	]}, function(err, puppy){	
+    	// Throw general error
+    	if (err) throw err;
+    	// Throw 401 (unauthenticated) error if db search returns empty array
+    	if (puppy.length == 0) {
+    		var err_message = 
+    			{
+    				"error":401,
+    				"error_message":"Wrong Credentials"
+    			}
+    		;
+    		res.send(JSON.stringify(err_message));
+
+        	return
+        }
+        // Authenticated
+     	else res.end('Authenticated');
+})})
 
 app.use('/puppies',puppyRouter);
 
