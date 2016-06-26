@@ -107,7 +107,7 @@ app.post('/register',function(req,res,next){
 		contact_email:email,
 		contact_password:password,
 		contact_phoneNo:number,
-		res.end("Saved");
+	
 	},function(err,data){
 		if(err)
 			throw err;
@@ -117,23 +117,11 @@ app.post('/register',function(req,res,next){
 
 			}
 	})
+	res.end("Saved");
 		
 
 })
 //end of dog login_id
-//start of the location bloc
-//The post request will be made with location coordinates
-//params will hold the dogs unique id 
-
-// app.get('/',function(req,res,next){
-// 	var number = "+13475838019";
-// 	var message = "Some random string";
-// 	twillio.createMessage(number,message);
-// 	res.send("It was send cunt");
-// 	res.end("Ben Afflick");
-// })
-//end of the registration block
-
 //start of the location block
 app.post('/location/:param',function(req,res,next){
 	Puppies.findOneAndUpdate({dog_id:req.params.param},{$set:{
@@ -143,29 +131,26 @@ app.post('/location/:param',function(req,res,next){
 			throw err;
 		else{
 			data.dog_friends.filter(function(el){
-				Puppies.findOne({dog_id:el},function(err,data){
-					if(err)
+				Puppies.find({dog_id:el},function(err,data){
+					if(err){
 						throw err;
-					else
-						if(data.dog_isOnline){
-							var Point = {
-								'id':data.dog_id,
+					}else{
+						//looking for dogs who is online
+						data.filter(function(el){
+							//if the dog is online check the distance 
+							if(el.dog_isOnline){
+								
 							}
-							request.post({url:'https://127.0.0.1:8888/get_loc', form: {key:'value'}}, function(err,httpResponse,body){ 
-								if(err)
-									console.log(err);
-								else{
-									console.log(body)
-								}
-							})
-						}else{
-							console.log("Ben Afflick");
-						}
+								
+						})
+					}
 				})
-			})
+			});
+			res.end("Located");
 		}
 			
 	});
+
 		
 });
 
