@@ -64,8 +64,8 @@ puppyRouter.route('/')
 puppyRouter.route('/login')
 .post(function (req, res, next) {
     Puppies.find({$and:[
-    		{contact_email: req.body.contact_email},
-    		{contact_password: req.body.contact_password}
+    		{dog_login_id: req.body.dog_login_id},
+    		{dog_password: req.body.dog_password}
     	]}, function(err, puppy){	
     	// Throw general error
     	if (err) throw err;
