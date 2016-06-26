@@ -1,7 +1,15 @@
 var request = require('request');
 var Distance = require('../distance');
 var fs = require('fs');
-request.post('http://127.0.0.1:8000/test', {form:{key:'value'}});
+request.post('http://127.0.0.1:8000/location/94c040c2-133d-49aa-8f44-fd64db369d98', {form:{lat:'40.681672',lon:' -73.014192'}},function(err,response,body){
+	if (err)
+		throw err;
+	else{
+		console.log("response=> ",response.body)
+		console.log("\n");
+		console.log("body=> ",body)
+	}
+});
 
 
 function to_kilometers (miles){
