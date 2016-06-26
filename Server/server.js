@@ -2,6 +2,7 @@ var express = require('express'),
 	app = express(),
 	request = require('request'),
 	body_parser = require('body-parser'),
+	twillio = require('./twilio'),
 	morgan = require('morgan'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
@@ -13,9 +14,9 @@ var express = require('express'),
 
 
 // connect to mongo lab db:
-// mongoose.connect(mongo_db_uri);
+ mongoose.connect(mongo_db_uri);
 // to delete: Rahman local: 
-var url = 'mongodb://localhost:27017/conFusion';mongoose.connect(url);
+//var url = 'mongodb://localhost:27017/conFusion';mongoose.connect(url);
 
 
 var db = mongoose.connection;
@@ -25,7 +26,6 @@ app.use(body_parser.urlencoded({'extended':false}));
 app.use(body_parser.json());
 app.use(body_parser.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
-
 
 
 
@@ -108,51 +108,97 @@ puppyRouter.route('/:pupId/friends')
 app.use('/puppies',puppyRouter);
 
 
+//create dog login_id
+app.post('/register',function(req,res,next){
+	var number = req.body['number'];
+	var id = uuid.v4();
+	var email = req.body['email'],
+		name = req.body['name'],
+		password = req.body['password'];
+	var dog_login_id = id.split("-")[0],
+		dog_id = id;
+	Puppies.create({
+		dog_id:dog_id,
+		dog_login_id:dog_login_id,
+		dog_name:name,
+		dog_gender:"",
+		dog_friends:[],
+		contact_email:email,
+		contact_password:password,
+		contact_phoneNo:number,
+		
+	},function(err,data){
+		if(err)
+			throw err;
+		else 
+			{
+				twillio.createMessage(data.contact_phoneNo,data.dog_login_id);
 
+			}
+	});
+	res.end("Saved");
+		
+
+})
+//end of dog login_id
 //start of the location bloc
 //The post request will be made with location coordinates
 //params will hold the dogs unique id 
 
-
+// app.get('/',function(req,res,next){
+// 	var number = "+13475838019";
+// 	var message = "Some random string";
+// 	twillio.createMessage(number,message);
+// 	res.send("It was send cunt");
+// 	res.end("Ben Afflick");
+// })
 //end of the registration block
 
 //start of the location block
 app.post('/location/:param',function(req,res,next){
-	console.log(req.params.param);
-	console.log(JSON.stringify(req.body));
-	Puppies.find({dog_id:req.params.param},function(err,data){
+	Puppies.findOneAndUpdate({dog_id:req.params.param},{$set:{
+		dog_isOnline:true
+	}},function(err,data){
 		if(err)
 			throw err;
 		else{
-			//first query friends and check whether they online or not
-			//if the friend online chekck location if the location
-			data[0].dog_friends.filter(function(el){
-				//to be changed to dog id instead
-				Puppies.find({dog_name:el},function(err,data){
+			data.dog_friends.filter(function(el){
+				Puppies.findOne({dog_id:el},function(err,data){
 					if(err)
 						throw err;
 					else
-						data[0].filter(function(el){
-							if (el.dog_isOnline)
-								console.log("It worked");
-							else
-								res.send("No dogs online");
-						})
+						if(data.dog_isOnline){
+							var Point = {
+								'id':data.dog_id,
+							}
+							request.post({url:'https://127.0.0.1:8888/get_loc', form: {key:'value'}}, function(err,httpResponse,body){ 
+								if(err)
+									console.log(err);
+								else{
+									console.log(body)
+								}
+							})
+						}else{
+							console.log("Ben Afflick");
+						}
 				})
 			})
-			//in acceptable radius send notification
 		}
-	})
+			
+	});
+		
 });
-
 
 
 
 //end of the location block
 
+//start of the friend block
+
+//end of the friend block
 
 
 
-app.listen(8000);
+app.listen(8000 );
 console.log("Application listening on port 8000");
 
