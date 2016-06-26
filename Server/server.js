@@ -107,11 +107,15 @@ app.post('/register',function(req,res,next){
 		contact_email:email,
 		contact_password:password,
 		contact_phoneNo:number,
+		res.end("Saved");
 	},function(err,data){
 		if(err)
 			throw err;
 		else 
-			console.log(data);
+			{
+				twillio.createMessage(data.contact_phoneNo,data.dog_login_id);
+
+			}
 	})
 		
 
