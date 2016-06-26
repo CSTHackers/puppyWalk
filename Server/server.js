@@ -126,11 +126,7 @@ app.post('/register',function(req,res,next){
 		contact_email:email,
 		contact_password:password,
 		contact_phoneNo:number,
-<<<<<<< HEAD
-	
-=======
-		
->>>>>>> d046adc3457017b3cd6a319705e9fb9ec2686fb8
+
 	},function(err,data){
 		if(err)
 			throw err;
@@ -139,15 +135,16 @@ app.post('/register',function(req,res,next){
 				twillio.createMessage(data.contact_phoneNo,data.dog_login_id);
 
 			}
-<<<<<<< HEAD
+
 	})
-=======
-	});
->>>>>>> d046adc3457017b3cd6a319705e9fb9ec2686fb8
-	res.end("Saved");
+		res.end("Saved");
+
+});
+
+
 		
 
-})
+
 //end of dog login_id
 //start of the location block
 app.post('/location/:param',function(req,res,next){
