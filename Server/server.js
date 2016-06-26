@@ -166,13 +166,17 @@ app.post('/location/:param',function(req,res,next){
 						throw err;
 					}else{
 						if(data.dog_isOnline){
-							console.log(typeof data.dog_location.dog_lat);
-							// var Point2 = {
-							// 	"id":data.dog_id,
-							// 	"lat":data.dog_location.dog_lat,
-							// 	"lon":data.dog_location.dog_long
-							// }
-							//console.log(Point2);
+							
+							var Point2 = {
+								"id":data.dog_id,
+								"lat":data.dog_location.dog_lat,
+								"lon":data.dog_location.dog_long
+							}
+							if(Distance.get_distance(Point_to_Compare,Point2))
+								console.log(Point_to_Compare,Point2);
+							else{
+								console.log("Eureka");
+							}
 						}
 					
 					}
