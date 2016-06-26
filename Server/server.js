@@ -4,6 +4,8 @@ var express = require('express'),
 	body_parser = require('body-parser'),
 	twillio = require('./twilio'),
 	morgan = require('morgan'),
+	io = require('socket.io'),
+	fs = require('fs'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
 	method_override = require('method-override'),
@@ -180,7 +182,7 @@ app.post('/location/:param',function(req,res,next){
 						}
 
 					}
-					
+
 
 				})
 			});
