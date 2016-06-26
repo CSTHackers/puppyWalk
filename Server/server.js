@@ -209,7 +209,7 @@ app.post('/location/:param',function(req,res,next){
 						}
 
 					}
-					res.send(JSON.stringify(locations_to_watch));
+					res.end(JSON.stringify(locations_to_watch));
 				})
 				
 			});
