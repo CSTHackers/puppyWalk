@@ -7,6 +7,9 @@ var puppySchema = new Schema({
         required: true,
         unique: true
     },
+    dog_login_id:{
+        type:String
+    },
     dog_name: {
         type: String,
         required: true

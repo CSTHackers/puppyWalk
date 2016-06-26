@@ -89,18 +89,45 @@ puppyRouter.route('/login')
 app.use('/puppies',puppyRouter);
 
 
+//create dog login_id
+app.post('/register',function(req,res,next){
+	var number = req.body['number'];
+	var id = uuid.v4();
+	var email = req.body['email'],
+		name = req.body['name'],
+		password = req.body['password'];
+	var dog_login_id = id.split("-")[0],
+		dig_id = id;
+	Puppies.create({
+		dog_id:dog_id,
+		dog_login_id:dog_login_id,
+		dog_name:name,
+		dog_gender:"",
+		dog_friends:[],
+		contact_email:email,
+		contact_password:password,
+		contact_phoneNo:number,
+	},function(err,data){
+		if(err)
+			throw err;
+		else 
+			console.log(data);
+	})
+		
 
+})
+//end of dog login_id
 //start of the location bloc
 //The post request will be made with location coordinates
 //params will hold the dogs unique id 
 
-app.get('/',function(req,res,next){
-	var number = "+13475838019";
-	var message = "Some random string";
-	twillio.createMessage(number,message);
-	res.send("It was send cunt");
-	res.end("Ben Afflick");
-})
+// app.get('/',function(req,res,next){
+// 	var number = "+13475838019";
+// 	var message = "Some random string";
+// 	twillio.createMessage(number,message);
+// 	res.send("It was send cunt");
+// 	res.end("Ben Afflick");
+// })
 //end of the registration block
 
 //start of the location block
