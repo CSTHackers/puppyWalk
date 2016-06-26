@@ -154,19 +154,27 @@ app.post('/location/:param',function(req,res,next){
 		if(err)
 			throw err;
 		else{
+			var Point_to_Compare = {
+				"id":data.dog_id,
+				"lat":req.body['lat'],
+				"lon":req.body['lon']
+			};
+			var locations_to_watch = [];
 			data.dog_friends.filter(function(el){
-				Puppies.find({dog_id:el},function(err,data){
+				Puppies.findOne({dog_id:el},function(err,data){
 					if(err){
 						throw err;
 					}else{
-						//looking for dogs who is online
-						data.filter(function(el){
-							//if the dog is online check the distance 
-							if(el.dog_isOnline){
-								
-							}
-								
-						})
+						if(data.dog_isOnline){
+							console.log(typeof data.dog_location.dog_lat);
+							// var Point2 = {
+							// 	"id":data.dog_id,
+							// 	"lat":data.dog_location.dog_lat,
+							// 	"lon":data.dog_location.dog_long
+							// }
+							//console.log(Point2);
+						}
+					
 					}
 				})
 			});
