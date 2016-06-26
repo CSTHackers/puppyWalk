@@ -36,7 +36,6 @@ var puppyRouter = express.Router();
 puppyRouter.route('/')
 // Read entire db collection
 .get(function(req,res,next){
-
 	Puppies.find({}, function (err, puppy) {
         if (err) throw err;
         res.json(puppy);
@@ -45,19 +44,19 @@ puppyRouter.route('/')
 // Create new puppy entry
 .post(function(req, res, next){
 	var id = uuid.v4();
+	var password = Math.random().toString(36).substr(2, 10);
 	Puppies.create({
 			dog_id: id, 
 			dog_name: req.body.dog_name,
+			dog_password: password,
 			dog_gender: req.body.dog_gender,
 			dog_friends: req.body.dog_friends,
 			dog_isOnline: req.body.dog_isOnline,
-			contact_email: req.body.contact_email,
-			contact_password: req.body.contact_password,
 			contact_phoneNo: req.body.contact_phoneNo
 		}, function (err, puppy) {
         if (err) throw err;
         console.log('Puppy created!');
-        res.end('Added puppy (' + req.body.dog_name + ') with id: ' + id);
+        res.end('Added puppy (' + req.body.dog_name + ') with id: ' + id + ' and password ' + password);
     });   
 })
 
@@ -86,6 +85,26 @@ puppyRouter.route('/login')
      	else res.end('Authenticated');
 })})
 
+
+// CRUD friends
+// Navigate to below route to get friends list for the dog indicated by pupId 
+puppyRouter.route('/:pupId/friends')
+.post(function (req, res, next) {
+	Puppies.update({dog_id: req.params.pupId}, 
+		{$push:{"dog_friends":req.body['id']}},function(err,data){
+			if(err)
+				throw err;
+			else{
+				console.log(data);
+				res.end('(' + req.params.pupId + ') has added (' + req.body.id + ') to friends list');
+			}
+		}
+
+	)});
+
+
+
+
 app.use('/puppies',puppyRouter);
 
 
@@ -107,7 +126,11 @@ app.post('/register',function(req,res,next){
 		contact_email:email,
 		contact_password:password,
 		contact_phoneNo:number,
+<<<<<<< HEAD
 	
+=======
+		
+>>>>>>> d046adc3457017b3cd6a319705e9fb9ec2686fb8
 	},function(err,data){
 		if(err)
 			throw err;
@@ -116,7 +139,11 @@ app.post('/register',function(req,res,next){
 				twillio.createMessage(data.contact_phoneNo,data.dog_login_id);
 
 			}
+<<<<<<< HEAD
 	})
+=======
+	});
+>>>>>>> d046adc3457017b3cd6a319705e9fb9ec2686fb8
 	res.end("Saved");
 		
 
