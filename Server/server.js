@@ -97,7 +97,7 @@ app.post('/register',function(req,res,next){
 		name = req.body['name'],
 		password = req.body['password'];
 	var dog_login_id = id.split("-")[0],
-		dig_id = id;
+		dog_id = id;
 	Puppies.create({
 		dog_id:dog_id,
 		dog_login_id:dog_login_id,
