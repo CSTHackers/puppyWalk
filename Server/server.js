@@ -175,13 +175,16 @@ app.post('/location/:param',function(req,res,next){
 							if(Distance.get_distance(Point_to_Compare,Point2))
 								console.log(Point_to_Compare,Point2);
 							else{
-								console.log("Eureka");
+								locations_to_watch.push(Point2);
 							}
 						}
-					
+
 					}
+					
+
 				})
 			});
+
 			res.end("Located");
 		}
 			
