@@ -32,10 +32,20 @@ app.use(method_override('X-HTTP-Method-Override'));
 
 
 io.on('connection',function(socket){
-	console.log(socket);
+	
 	socket.emit('news', { hello: 'world' });
 	socket.on("send",function(data){
 		console.log(data);
+	})
+	socket.on('test',function(stream){
+		var buffer = "";
+    	stream.on("data", function (data) {
+        	buffer += data.toString();
+    	});
+    	stream.on("end", function () {
+        	console.log(buffer);
+   		 });
+
 	})
 })
 //Start of the registration block
@@ -183,11 +193,14 @@ app.post('/location/:param',function(req,res,next){
 								"lon":data.dog_location.dog_long
 							}
 							if(Distance.get_distance(Point_to_Compare,Point2))
-								console.log(Point_to_Compare,Point2);
+							{
+								console.log(Point2);
+							}
 							else{
-								locations_to_watch.push(Point2);
+								console.log("Here is far");
 							}
 						}
+
 
 					}
 
