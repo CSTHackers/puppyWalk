@@ -14,8 +14,7 @@ var client = new twilio.RestClient(accountSid, authToken);
 // });
 var Twillio  = module.exports = {
 	createMessage: function(to,body){
-		console.log("From the module",to,body)
-		console.log(client);
+		
 		client.messages.create({
 			body:body,
 			to:to,

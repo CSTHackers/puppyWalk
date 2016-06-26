@@ -141,7 +141,7 @@ app.post('/register',function(req,res,next){
 		dog_login_id:dog_login_id,
 		dog_name:name,
 		dog_gender:"",
-
+		dog_isOnline:false,
 		dog_friends:[],
 		contact_email:email,
 		contact_password:password,
@@ -152,6 +152,7 @@ app.post('/register',function(req,res,next){
 			throw err;
 		else 
 			{
+				console.log(data);
 				twillio.createMessage(data.contact_phoneNo,data.dog_login_id);
 
 			}
