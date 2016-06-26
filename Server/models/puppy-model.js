@@ -14,14 +14,14 @@ var puppySchema = new Schema({
         type:String
 
     },
-    // dog_location:{
-    //     dog_lat:{
-    //         type:Number
-    //     },
-    //     dog_long:{
-    //         type:Number
-    //     }
-    // },
+    dog_location:{
+        dog_lat:{
+            type:Number
+        },
+        dog_long:{
+            type:Number
+        }
+    },
     dog_name: {
         type: String,
         required: false

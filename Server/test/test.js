@@ -1,15 +1,8 @@
 var request = require('request');
 var Distance = require('../distance');
 var fs = require('fs');
+request.post('http://127.0.0.1:8000/test', {form:{key:'value'}});
 
-var array = [1,2,3,4,5,6,5,7,8,3,9,];
-var read_stream  = fs.createReadStream(Buffer.from(array));
-read_stream.on('open',function(err,response){
-	if(err)
-		throw err;
-	else
-		console.log(response);
-})
 
 function to_kilometers (miles){
 	return miles/0.62137;

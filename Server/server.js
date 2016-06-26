@@ -162,9 +162,13 @@ app.post('/register',function(req,res,next){
 
 });
 
-
-		
-
+/*
+	Testing post request
+*/
+app.post("/test",function(req,res,next){
+	console.log(req.body);
+	res.end("Request was ended ");
+})
 
 //end of dog login_id
 //start of the location block
