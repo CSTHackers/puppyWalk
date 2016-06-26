@@ -8,4 +8,6 @@ var socket = io.connect('http://localhost:8000', {reconnect: true});
 socket.on('connect', function (socket) {
     console.log('Connected!');
 });
-socket.emit('send',{data:3,wooL:2});
+socket.on('news',function(data){
+	console.log(data);
+})

@@ -32,6 +32,8 @@ app.use(method_override('X-HTTP-Method-Override'));
 
 
 io.on('connection',function(socket){
+	console.log(socket);
+	socket.emit('news', { hello: 'world' });
 	socket.on("send",function(data){
 		console.log(data);
 	})
