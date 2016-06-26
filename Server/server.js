@@ -4,7 +4,8 @@ var express = require('express'),
 	body_parser = require('body-parser'),
 	twillio = require('./twilio'),
 	morgan = require('morgan'),
-	io = require('socket.io'),
+	http = require('http').Server(app),
+	io = require('socket.io')(http),
 	fs = require('fs'),
 	_ = require('lodash'),
 	mongoose = require('mongoose'),
@@ -30,7 +31,11 @@ app.use(body_parser.json({type:'application/vdn.api+json'}));
 app.use(method_override('X-HTTP-Method-Override'));
 
 
-
+io.on('connection',function(socket){
+	socket.on("send",function(data){
+		console.log(data);
+	})
+})
 //Start of the registration block
 var puppyRouter = express.Router();
 
@@ -124,6 +129,7 @@ app.post('/register',function(req,res,next){
 		dog_login_id:dog_login_id,
 		dog_name:name,
 		dog_gender:"",
+
 		dog_friends:[],
 		contact_email:email,
 		contact_password:password,
@@ -205,6 +211,6 @@ app.post('/location/:param',function(req,res,next){
 
 
 
-app.listen(8000 );
+http.listen(8000 );
 console.log("Application listening on port 8000");
 
