@@ -4,36 +4,34 @@ var Schema = mongoose.Schema;
 var puppySchema = new Schema({
     dog_id: {
         type: String,
-        required: true,
-        unique: true
     },
 
     dog_password: {
         type: String,
-        required: true
+        required: false
     },
     dog_login_id:{
         type:String
 
     },
-    dog_location:{
-        dog_lat:{
-            type:Number
-        },
-        dog_long:{
-            type:Number
-        }
-    },
+    // dog_location:{
+    //     dog_lat:{
+    //         type:Number
+    //     },
+    //     dog_long:{
+    //         type:Number
+    //     }
+    // },
     dog_name: {
         type: String,
-        required: true
+        required: false
     },
     dog_gender:{
         type: String
     },
     dog_friends:[String],
     dog_isOnline: {type: Boolean, default: false},
-    contact_phoneNo: String
+    contact_phoneNo: false
 }, {
     timestamps: true
 });
