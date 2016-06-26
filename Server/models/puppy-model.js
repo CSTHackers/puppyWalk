@@ -7,6 +7,10 @@ var puppySchema = new Schema({
         required: true,
         unique: true
     },
+    dog_password: {
+        type: String,
+        required: true
+    },
     dog_name: {
         type: String,
         required: true
@@ -16,11 +20,6 @@ var puppySchema = new Schema({
     },
     dog_friends:[String],
     dog_isOnline: {type: Boolean, default: false},
-    contact_email: {
-        type: String,
-        unique: true
-    },
-    contact_password: String,
     contact_phoneNo: String
 }, {
     timestamps: true
