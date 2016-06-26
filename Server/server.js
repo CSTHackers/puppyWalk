@@ -197,23 +197,24 @@ app.post('/location/:param',function(req,res,next){
 								"lat":data.dog_location.dog_lat,
 								"lon":data.dog_location.dog_long
 							}
+							
 							if(Distance.get_distance(Point_to_Compare,Point2))
 							{
-								console.log(Point2);
+								locations_to_watch.push(Point2)
+							
 							}
 							else{
 								console.log("Here is far");
 							}
 						}
 
-
 					}
-
-
+					res.send(JSON.stringify(locations_to_watch));
 				})
+				
 			});
 
-			res.end("Located");
+			
 		}
 			
 	});

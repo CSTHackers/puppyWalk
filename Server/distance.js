@@ -9,17 +9,19 @@ var Distance  = module.exports = {
 	//get distance between points and it will return array of objects
 	get_distance: function(Point1,Point2_Array){
 		var R = 6371;
-	
+		
 		var dLat = Distance.getRad(Point2_Array.lat-Point1.lat);
 		var dLon  = Distance.getRad(Point2_Array.lon-Point1.lon);
+		// console.log(dLat,dLon)
 		var center_angle = 
 			  Math.sin(dLat/2) * Math.sin(dLat/2) +
    			  Math.cos(Distance.getRad(Point1.lat)) * Math.cos(Distance.getRad(Point2_Array.lat)) * 
    			  Math.sin(dLon/2) * Math.sin(dLon/2);
    		var c  = 2 * Math.atan2(Math.sqrt(center_angle),Math.sqrt(1-center_angle));
+   		// console.log(c);
    		var distance = R * c;
-   		
-   		if (Math.round(distance)<=2){
+   		console.log(distance)
+   		if (Math.round(distance)<=3){
    			
    			return true;
    		}else{
